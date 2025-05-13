@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: layout('Junie Bookmarks', ~{::div.content})}">
+<body>
+    <div class="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Bookmarks</h1>
+            <a th:href="@{/bookmarks/new}" class="btn btn-primary">Add New Bookmark</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(bookmarks)}" class="alert alert-info">
+            No bookmarks found. Click the "Add New Bookmark" button to create one.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(bookmarks)}" class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>URL</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="bookmark : ${bookmarks}">
+                        <td>
+                            <a th:href="${bookmark.url}" th:text="${bookmark.title}" target="_blank"></a>
+                        </td>
+                        <td>
+                            <a th:href="${bookmark.url}" th:text="${bookmark.url}" target="_blank" class="text-truncate d-inline-block" style="max-width: 300px;"></a>
+                        </td>
+                        <td th:text="${#temporals.format(bookmark.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/bookmarks/{id}/edit(id=${bookmark.id})}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a th:href="@{/bookmarks/{id}/delete(id=${bookmark.id})}" class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Are you sure you want to delete this bookmark?')">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

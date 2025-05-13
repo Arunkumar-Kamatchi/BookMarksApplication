@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: layout(${bookmark.id != null ? 'Edit Bookmark' : 'Create Bookmark'}, ~{::div.content})}">
+<body>
+    <div class="content">
+        <h1 th:text="${bookmark.id != null ? 'Edit Bookmark' : 'Create Bookmark'}"></h1>
+
+        <!-- Form for creating a new bookmark -->
+        <form th:if="${bookmark.id == null}" th:action="@{/bookmarks}" 
+              th:object="${bookmark}" method="post" class="mt-4">
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" th:field="*{title}" required>
+                <div class="form-text">Enter a descriptive title for the bookmark.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="url" class="form-label">URL</label>
+                <input type="url" class="form-control" id="url" th:field="*{url}" required>
+                <div class="form-text">Enter the full URL including http:// or https://</div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <!-- Form for editing an existing bookmark -->
+        <form th:if="${bookmark.id != null}" th:action="@{/bookmarks/{id}(id=${bookmark.id})}" 
+              th:object="${bookmark}" method="post" class="mt-4">
+
+            <div class="mb-3">
+                <label for="editTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="editTitle" th:field="*{title}" required>
+                <div class="form-text">Enter a descriptive title for the bookmark.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="editUrl" class="form-label">URL</label>
+                <input type="url" class="form-control" id="editUrl" th:field="*{url}" required>
+                <div class="form-text">Enter the full URL including http:// or https://</div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
